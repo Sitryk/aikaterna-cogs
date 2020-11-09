@@ -775,7 +775,7 @@ class Tools(commands.Cog):
         mins, secs = divmod(int(since_join.total_seconds()), 60)
         hrs, mins = divmod(mins, 60)
         days, hrs = divmod(hrs, 24)
-        mths, wks, days = Tools._count_months(days)
+        mths, wks, days = Tools._count_months(days, date_join.month)
         yrs, mths = divmod(mths, 12)
 
         m = f"{yrs}y {mths}mth {wks}w {days}d {hrs}h {mins}m {secs}s"
@@ -787,9 +787,10 @@ class Tools(commands.Cog):
             return ''
 
     @staticmethod
-    def _count_months(days):
+    def _count_months(days: int, start_month: int):
         lens = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
         cy = itertools.cycle(lens)
+        [next(cy) for _ in range(start_month-1)]
         months = 0
         m_temp = 0
         mo_len = next(cy)
